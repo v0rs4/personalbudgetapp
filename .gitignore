@@ -11,3 +11,10 @@
 /log/*
 !/log/.keep
 /tmp
+*~
+.DS_Store
+/.idea
+/.rvmrc
+/config/database.yml
+/coverage
+/spec/examples.txt

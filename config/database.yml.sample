@@ -1,0 +1,15 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: ruby
+  password: ruby
+  host: localhost
+  pool: 5
+
+development:
+  <<: *default
+  database: personalbudget_development
+
+test:
+  <<: *default
+  database: personalbudget_test
