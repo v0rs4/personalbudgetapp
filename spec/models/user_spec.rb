@@ -22,4 +22,7 @@ RSpec.describe User, type: :model do
   it { is_expected.to have_db_column(:remember_created_at) }
   it { is_expected.to have_db_column(:created_at) }
   it { is_expected.to have_db_column(:updated_at) }
+
+  it { is_expected.to have_many(:budget_domains) }
+  it { is_expected.to have_many(:memberships) }
 end

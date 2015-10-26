@@ -16,4 +16,7 @@ class User < ActiveRecord::Base
   devise  *DEVISE_MODULES
 
   enum role: ROLES
+
+  has_many :memberships
+  has_many :budget_domains, through: :memberships
 end

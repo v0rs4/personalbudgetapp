@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @budget_domain.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @budget_domain.description %>
+</p>
+
+<h4>Members</h4>
+<ul>
+  <% @budget_domain.users.each do |user| %>
+    <li><%= user.email %></li>
+  <% end %>
+</ul>
+
+
+<%= link_to 'Edit', edit_budget_domain_path(@budget_domain) %> |
+<%= link_to 'Back', budget_domains_path %>
