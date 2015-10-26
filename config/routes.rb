@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  default_url_options host: ENV['DOMAIN']
   devise_for :users
   resources :domains, controller: :budget_domains, as: :budget_domains
   # The priority is based upon order of creation: first created -> highest priority.

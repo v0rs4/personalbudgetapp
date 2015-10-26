@@ -1,15 +1,18 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: ruby
-  password: ruby
-  host: localhost
   pool: 5
+  host: <%= ENV['DATABASE_HOST'] %>
+  port: <%= ENV['DATABASE_PORT'] %>
+  database: <%= ENV['DATABASE_NAME'] %>
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
 
 development:
   <<: *default
-  database: personalbudget_development
 
 test:
   <<: *default
-  database: personalbudget_test
+
+production:
+  <<: *default

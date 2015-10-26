@@ -4,15 +4,13 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  # Devise will use the `secret_key_base` on Rails 4+ applications as its `secret_key`
-  # by default. You can change it below and use your own secret key.
-  # config.secret_key = '6e09d22bfbf12c35e71bb160ca5f0583db8d186d6c7dcb89927136ba51ab22977c35f7da01eac51cde7d97cd061b8edf60a2b96d937aac1bfb7e8325133d1b96'
+  config.secret_key = ENV['DEVISE_SECRET_KEY']
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = ENV['MAIL_FROM']
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -99,7 +97,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Setup a pepper to generate the encrypted password.
-  # config.pepper = '97bdc631ca54de70576b220a121bf5bb250688277f48cbcc72aa128617e537ffc5b6ce0d58aafe606070b62aab66a22c7db9ce395933a5df4e0076288778876d'
+  config.pepper = ENV['DEVISE_PEPPER']
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -188,11 +186,7 @@ Devise.setup do |config|
   # Time interval you can reset your password with a reset password key.
   # Don't put a too small interval or your users won't have the time to
   # change their passwords.
-  config.reset_password_within = 6.hours
-
-  # When set to false, does not sign a user in automatically after their password is
-  # reset. Defaults to true, so a user is signed in automatically after a reset.
-  # config.sign_in_after_reset_password = true
+  config.reset_password_within = 1.hour
 
   # ==> Configuration for :encryptable
   # Allow you to use another encryption algorithm besides bcrypt (default). You can use
