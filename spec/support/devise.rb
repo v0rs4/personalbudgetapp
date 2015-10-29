@@ -10,5 +10,7 @@ end
 
 RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :controller
+  config.include Devise::TestHelpers, :type => :view
   config.extend Devise::RspecControllerMacros, :type => :controller
+  config.extend Devise::RspecControllerMacros, :type => :view
 end

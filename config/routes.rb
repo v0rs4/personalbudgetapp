@@ -2,6 +2,13 @@ Rails.application.routes.draw do
   default_url_options host: ENV['DOMAIN']
   devise_for :users
   resources :domains, controller: :budget_domains, as: :budget_domains
+  scope '/domains' do
+    resources :invitations, controller: :budget_domain_invitations, as: :budget_domain_invitations, only: %i[new create]
+    resources :memberships, controller: :budget_domain_memberships, as: :budget_domain_memberships, only: %i[destroy] do
+      get 'join', action: :create, on: :collection # GET to join a budget domain from the internet
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

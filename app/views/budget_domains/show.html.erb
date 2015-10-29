@@ -12,9 +12,13 @@
 
 <h4>Members</h4>
 <ul>
-  <% @budget_domain.users.each do |user| %>
-    <li><%= user.email %></li>
+  <% @members.each do |user| %>
+    <li>
+      <%= user.email %>
+      <small>(<%= user.budget_domain_role %>)</small>
+    </li>
   <% end %>
+  <li><%= link_to 'Invite a member', new_budget_domain_invitation_path(id: @budget_domain.id) %></li>
 </ul>
 
 

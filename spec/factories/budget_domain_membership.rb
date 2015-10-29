@@ -1,8 +1,7 @@
 FactoryGirl.define do
-  factory :membership do
+  factory :budget_domain_membership do
     user_id { fail(NotImplemetedError) }
     budget_domain_id { fail(NotImplemetedError) }
-    role 0
-    permission_bitmask 0
+    role 'member'
   end
 end

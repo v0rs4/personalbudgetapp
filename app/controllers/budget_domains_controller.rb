@@ -1,17 +1,17 @@
 class BudgetDomainsController < ApplicationController
   before_action :set_budget_domain, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
 
   # GET /domains
   # GET /domains.json
   def index
-    @budget_domains = BudgetDomain.all
+    @budget_domains = current_user.budget_domains
   end
 
   # GET /domains/1
   # GET /domains/1.json
   def show
-    # @members = @budget_domain.users
+    @members = User.with_membership(budget_domain_id: @budget_domain.id)
   end
 
   # GET /domains/new
@@ -26,10 +26,14 @@ class BudgetDomainsController < ApplicationController
   # POST /domains
   # POST /domains.json
   def create
-    @budget_domain = BudgetDomain.new(budget_domain_params)
+    service = BudgetDomainCreator.call(
+      params: budget_domain_params,
+      user_id:  current_user.id
+    )
+    @budget_domain = service.budget_domain
 
     respond_to do |format|
-      if @budget_domain.save
+      if service.status == :ok
         format.html { redirect_to @budget_domain, notice: 'Budget domain was successfully created.' }
         format.json { render :show, status: :created, location: @budget_domain }
       else
@@ -58,7 +62,7 @@ class BudgetDomainsController < ApplicationController
   def destroy
     @budget_domain.destroy
     respond_to do |format|
-      format.html { redirect_to budget_domains_url, notice: 'Budget domain was successfully destroyed.' }
+      format.html { redirect_to budget_domains_path, notice: 'Budget domain was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -67,7 +71,7 @@ class BudgetDomainsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_budget_domain
-    @budget_domain = BudgetDomain.find(params[:id])
+    @budget_domain = current_user.budget_domains.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

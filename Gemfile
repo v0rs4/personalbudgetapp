@@ -9,6 +9,7 @@ gem 'jquery-rails'
 gem 'devise'
 gem 'cancancan'
 gem 'dotenv-rails'
+gem 'jwt'
 
 group :development, :test do
   gem 'capybara'

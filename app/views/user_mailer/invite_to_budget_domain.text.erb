@@ -1,0 +1,4 @@
+Hi, you've been invited to join '<%= @budget_domain.name %>' budget domain.
+
+Copy and paste into your browser
+<%= join_budget_domain_memberships_url(token: @jwt, host: ENV['DOMAIN']) %>

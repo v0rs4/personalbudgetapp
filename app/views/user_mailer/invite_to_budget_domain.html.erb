@@ -1,0 +1,3 @@
+<p>Hi, you've been invited to join '<%= @budget_domain.name %>' budget domain.</p>
+
+<p><%= link_to 'Join', join_budget_domain_memberships_url(token: @jwt, host: ENV['DOMAIN']) %></p>

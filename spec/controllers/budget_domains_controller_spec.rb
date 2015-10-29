@@ -1,7 +1,11 @@
 RSpec.describe BudgetDomainsController, type: :controller do
-  login_user
+  let!(:user) { create(:user_with_budget_domains) }
+  let!(:budget_domains) { user.budget_domains }
+  let!(:budget_domain) { user.budget_domains.last }
 
-  let(:valid_attributes) { FactoryGirl.attributes_for(:budget_domain) }
+  before(:example) { sign_in user }
+
+  let(:valid_attributes) { attributes_for(:budget_domain) }
 
   let(:invalid_attributes) {
     valid_attributes.tap do |attrs|
@@ -15,13 +19,12 @@ RSpec.describe BudgetDomainsController, type: :controller do
     it "assigns all budget_domains as @budget_domains" do
       budget_domain = BudgetDomain.create! valid_attributes
       get :index, {}, valid_session
-      expect(assigns(:budget_domains)).to eq([budget_domain])
+      expect(assigns(:budget_domains)).to eq(budget_domains)
     end
   end
 
   describe "GET #show" do
     it "assigns the requested budget_domain as @budget_domain" do
-      budget_domain = BudgetDomain.create! valid_attributes
       get :show, {:id => budget_domain.to_param}, valid_session
       expect(assigns(:budget_domain)).to eq(budget_domain)
     end
@@ -36,7 +39,6 @@ RSpec.describe BudgetDomainsController, type: :controller do
 
   describe "GET #edit" do
     it "assigns the requested budget_domain as @budget_domain" do
-      budget_domain = BudgetDomain.create! valid_attributes
       get :edit, {:id => budget_domain.to_param}, valid_session
       expect(assigns(:budget_domain)).to eq(budget_domain)
     end
@@ -80,20 +82,17 @@ RSpec.describe BudgetDomainsController, type: :controller do
       let(:new_attributes) { FactoryGirl.attributes_for(:budget_domain) }
 
       it "updates the requested budget_domain" do
-        budget_domain = BudgetDomain.create! valid_attributes
         put :update, {:id => budget_domain.to_param, :budget_domain => new_attributes}, valid_session
         budget_domain.reload
         expect(assigns(:budget_domain)).to eq(budget_domain)
       end
 
       it "assigns the requested budget_domain as @budget_domain" do
-        budget_domain = BudgetDomain.create! valid_attributes
         put :update, {:id => budget_domain.to_param, :budget_domain => valid_attributes}, valid_session
         expect(assigns(:budget_domain)).to eq(budget_domain)
       end
 
       it "redirects to the budget_domain" do
-        budget_domain = BudgetDomain.create! valid_attributes
         put :update, {:id => budget_domain.to_param, :budget_domain => valid_attributes}, valid_session
         expect(response).to redirect_to(budget_domain)
       end
@@ -101,13 +100,11 @@ RSpec.describe BudgetDomainsController, type: :controller do
 
     context "with invalid params" do
       it "assigns the budget_domain as @budget_domain" do
-        budget_domain = BudgetDomain.create! valid_attributes
         put :update, {:id => budget_domain.to_param, :budget_domain => invalid_attributes}, valid_session
         expect(assigns(:budget_domain)).to eq(budget_domain)
       end
 
       it "re-renders the 'edit' template" do
-        budget_domain = BudgetDomain.create! valid_attributes
         put :update, {:id => budget_domain.to_param, :budget_domain => invalid_attributes}, valid_session
         expect(response).to render_template("edit")
       end
@@ -116,14 +113,12 @@ RSpec.describe BudgetDomainsController, type: :controller do
 
   describe "DELETE #destroy" do
     it "destroys the requested budget_domain" do
-      budget_domain = BudgetDomain.create! valid_attributes
       expect {
         delete :destroy, {:id => budget_domain.to_param}, valid_session
       }.to change(BudgetDomain, :count).by(-1)
     end
 
     it "redirects to the budget_domains list" do
-      budget_domain = BudgetDomain.create! valid_attributes
       delete :destroy, {:id => budget_domain.to_param}, valid_session
       expect(response).to redirect_to(budget_domains_url)
     end

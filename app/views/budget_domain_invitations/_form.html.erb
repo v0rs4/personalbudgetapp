@@ -1,0 +1,27 @@
+<%= form_for(@budget_domain_invitation) do |f| %>
+  <% if @budget_domain_invitation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@budget_domain_invitation.errors.count, "error") %> prohibited this budget_domain from being saved:</h2>
+
+      <ul>
+      <% @budget_domain_invitation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :email %><br>
+    <%= f.email_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :budget_domain_id %><br>
+    <%= f.select :budget_domain_id,  current_user.budget_domains.map { |bd| [bd.name, bd.id] } %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit 'Invite' %>
+  </div>
+<% end %>

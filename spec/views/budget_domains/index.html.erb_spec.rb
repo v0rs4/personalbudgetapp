@@ -1,20 +1,17 @@
 RSpec.describe "budget_domains/index", type: :view do
+  let!(:user) { create(:user_with_budget_domains, budget_domains_count: 2) }
+  let(:budget_domains) { user.budget_domains }
+
   before(:each) do
-    assign(:budget_domains, [
-      BudgetDomain.create!(
-        :name => "Name",
-        :description => "MyText"
-      ),
-      BudgetDomain.create!(
-        :name => "Name",
-        :description => "MyText"
-      )
-    ])
+    sign_in user
+    assign(:budget_domains, budget_domains)
   end
 
   it "renders a list of budget_domains" do
     render
-    assert_select "tr>td", :text => "Name".to_s, :count => 2
-    assert_select "tr>td", :text => "MyText".to_s, :count => 2
+    budget_domains.each do |budget_domain|
+      assert_select "tr>td", :text => budget_domain.name, :count => 1
+      assert_select "tr>td", :text => budget_domain.description, :count => 1
+    end
   end
 end

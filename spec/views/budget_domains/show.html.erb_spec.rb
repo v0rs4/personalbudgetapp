@@ -1,9 +1,13 @@
 RSpec.describe "budget_domains/show", type: :view do
-  before(:each) do
-    @budget_domain = assign(:budget_domain, budget_domain)
-  end
+  let!(:user) { create(:user_with_budget_domains) }
+  let(:budget_domain) { user.budget_domains.last }
+  let(:members) { User.with_membership(budget_domain_id: budget_domain.id) }
 
-  let(:budget_domain) { create(:budget_domain) }
+  before(:each) do
+    sign_in user
+    assign(:budget_domain, budget_domain)
+    assign(:members, members)
+  end
 
   it "renders attributes in <p>" do
     render
