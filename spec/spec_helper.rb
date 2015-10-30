@@ -52,4 +52,5 @@ RSpec.configure do |config|
 
   config.around(:each) { |xmpl| DatabaseCleaner.cleaning { xmpl.run } }
   config.infer_spec_type_from_file_location!
+  config.render_views
 end

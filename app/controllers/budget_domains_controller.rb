@@ -35,10 +35,11 @@ class BudgetDomainsController < ApplicationController
     respond_to do |format|
       if service.status == :ok
         format.html { redirect_to @budget_domain, notice: 'Budget domain was successfully created.' }
-        format.json { render :show, status: :created, location: @budget_domain }
+        # format.html { redirect_to @budget_domain, notice: 'Budget domain was successfully created.' }
+        # format.json { render :show, status: :created, location: @budget_domain }
       else
         format.html { render :new }
-        format.json { render json: @budget_domain.errors, status: :unprocessable_entity }
+        # format.json { render json: @budget_domain.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -49,10 +50,10 @@ class BudgetDomainsController < ApplicationController
     respond_to do |format|
       if @budget_domain.update(budget_domain_params)
         format.html { redirect_to @budget_domain, notice: 'Budget domain was successfully updated.' }
-        format.json { render :show, status: :ok, location: @budget_domain }
+        # format.json { render :show, status: :ok, location: @budget_domain }
       else
         format.html { render :edit }
-        format.json { render json: @budget_domain.errors, status: :unprocessable_entity }
+        # format.json { render json: @budget_domain.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -63,7 +64,7 @@ class BudgetDomainsController < ApplicationController
     @budget_domain.destroy
     respond_to do |format|
       format.html { redirect_to budget_domains_path, notice: 'Budget domain was successfully destroyed.' }
-      format.json { head :no_content }
+      # format.json { head :no_content }
     end
   end
 

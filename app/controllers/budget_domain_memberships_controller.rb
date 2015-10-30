@@ -1,20 +1,25 @@
 class BudgetDomainMembershipsController < ApplicationController
-  # GET /domains/memberships/join?token=XXXX.XXXX.XXXX
-  def create
-    payload = decode_invitation_token
+  before_action :authenticate_user!, only: :destroy
 
-    BudgetDomainMembership.create(
-      user_id: payload['user_id'],
-      budget_domain_id: payload['budget_domain_id']
+  # GET /domains/memberships/join?token=XXXX.XXXX.XXXX
+  def join
+    JWTDecoder.call(token: params[:token]).resolve(
+      ok: lambda do |service|
+        payload = service.result[:payload]
+        BudgetDomainMembership.create(
+          user_id: payload[:user_id],
+          budget_domain_id: payload[:budget_domain_id]
+        )
+        flash[:notice] = 'Successfuly'
+      end,
+      any_error: lambda do |_|
+        flash[:alert] = 'Invalid token'
+      end
     )
-    flash[:notice] = 'Successfuly'
-  rescue JWT::DecodeError, ActiveRecord::RecordNotUnique
-    flash[:alert] = 'Invalid token'
+  rescue ActiveRecord::RecordNotUnique
+    flash[:notice] = 'You are already a member'
   ensure
-    respond_to do |format|
-      format.html { redirect_to budget_domains_path }
-      format.json { head :no_content }
-    end
+    redirect_to budget_domains_path
   end
 
   # DELETE /domains/memberships/:id
@@ -25,16 +30,5 @@ class BudgetDomainMembershipsController < ApplicationController
       format.html { redirect_to budget_domains_path, notice: 'Budget domain membership was successfully destroyed.' }
       format.json { head :no_content }
     end
-  end
-
-  private
-
-   def decode_invitation_token
-    JWT.decode(
-      params[:token],
-      Rails.application.secrets.secret_jwt,
-      true,
-      algorithm: 'HS256'
-    ).first
   end
 end

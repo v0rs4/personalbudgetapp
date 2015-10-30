@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   resources :domains, controller: :budget_domains, as: :budget_domains
   scope '/domains' do
     resources :invitations, controller: :budget_domain_invitations, as: :budget_domain_invitations, only: %i[new create]
-    resources :memberships, controller: :budget_domain_memberships, as: :budget_domain_memberships, only: %i[destroy] do
-      get 'join', action: :create, on: :collection # GET to join a budget domain from the internet
+    resources :memberships, controller: :budget_domain_memberships, as: :budget_domain_memberships, only: :destroy do
+      get 'join', on: :collection
     end
   end
 

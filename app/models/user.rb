@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
         ', budget_domain_memberships.role as budget_domain_role' \
         ', budget_domain_memberships.id as budget_domain_id'
       )
-    return rel unless budget_domain_id
+    return rel unless budget_domain_id && budget_domain_id.is_a?(Fixnum)
     rel.where('budget_domain_id = ?', budget_domain_id)
   }
 end
