@@ -8,14 +8,47 @@ RSpec.describe BudgetDomainMembershipsController, type: :controller do
       { user_id: user.id, budget_domain_id: budget_domain.id }
     end
 
-    let(:token) do
-      JWTEncoder.call(data: data).result[:token]
+    let(:valid_token) { JWTEncoder.call(data: data).result[:token] }
+
+    context 'when token is valid' do
+      let(:token) { valid_token }
+
+      it 'joins a user to a budget domain' do
+        expect {
+          get :join, { token: token }
+        }.to change(BudgetDomainMembership, :count).by(1)
+      end
+
+      it 'sets notice flash to "Successfuly"' do
+        get :join, { token: token }
+        expect(controller).to set_flash[:notice].to('Successfuly')
+      end
+
+      context 'when call twice with the same token' do
+        it 'sets notice flash to "You are already a member"' do
+          get :join, { token: token }
+          get :join, { token: token }
+          expect(controller).to set_flash[:notice].to('You are already a member')
+        end
+      end
     end
 
-    it 'joins a user to a budget domain' do
-      expect {
+    context 'when the token is invalid' do
+      let(:token) { valid_token << 'WrOnG' }
+
+      it 'sets alert flash to "Invalid token"' do
         get :join, { token: token }
-      }.to change(BudgetDomainMembership, :count).by(1)
+        expect(controller).to set_flash[:alert].to('Invalid token')
+      end
+    end
+
+    context 'when the token is not a token at all' do
+      let(:token) { 'WrOnG' }
+
+      it 'sets alert flash to "Invalid token"' do
+        get :join, { token: token }
+        expect(controller).to set_flash[:alert].to('Invalid token')
+      end
     end
   end
 

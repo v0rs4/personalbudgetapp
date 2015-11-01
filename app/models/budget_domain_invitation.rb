@@ -6,6 +6,7 @@ class BudgetDomainInvitation
 
   validates :email, format: { with: Devise.email_regexp }
   validates :budget_domain_id, numericality: { only_integer: true }
+  validate :budget_domain_existence
 
   def send_invitation
     return false unless valid?
@@ -31,5 +32,13 @@ class BudgetDomainInvitation
 
   def user_not_a_member?
     !budget_domain.memberships.exists?(user_id: user.id)
+  end
+
+  def budget_domain_existence
+    errors.add(:budget_domain_id, :invalid) unless budget_domain_exists?
+  end
+
+  def budget_domain_exists?
+    BudgetDomain.exists?(id: budget_domain_id)
   end
 end
