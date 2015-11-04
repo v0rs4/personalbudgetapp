@@ -6,6 +6,8 @@ RSpec.describe "budget_domain_invitations/new.html.erb", type: :view do
 
   before(:example) do
     sign_in user
+    view.params[:budget_domain_id] = budget_domain.id
+    assign(:budget_domain, budget_domain)
     assign(:budget_domain_invitation, BudgetDomainInvitation.new(
       email: email,
       budget_domain_id: budget_domain.id
@@ -15,9 +17,8 @@ RSpec.describe "budget_domain_invitations/new.html.erb", type: :view do
   it "renders new budget_domain form" do
     render
 
-    assert_select "form[action=?][method=?]", budget_domain_invitations_path, "post" do
+    assert_select "form[action=?][method=?]", budget_domain_invitations_path(budget_domain), "post" do
       assert_select "input#budget_domain_invitation_email[name=?]", "budget_domain_invitation[email]"
-      assert_select "select#budget_domain_invitation_budget_domain_id[name=?]", "budget_domain_invitation[budget_domain_id]"
     end
   end
 end

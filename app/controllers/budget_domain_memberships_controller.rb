@@ -1,5 +1,12 @@
 class BudgetDomainMembershipsController < ApplicationController
-  before_action :authenticate_user!, only: :destroy
+  before_action :authenticate_user!, except: :join
+
+  def index
+    @budget_domain = BudgetDomain.find(params[:budget_domain_id])
+    @memberships = BudgetDomainMembership.includes(:user).where(
+      budget_domain: @budget_domain
+    )
+  end
 
   # GET /domains/memberships/join?token=XXXX.XXXX.XXXX
   def join

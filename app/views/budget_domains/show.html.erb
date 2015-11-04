@@ -15,12 +15,12 @@
   <% @members.each do |user| %>
     <li>
       <%= user.email %>
-      <small>(<%= user.budget_domain_role %>)</small>
+      <small>(<%= user.budget_domain_membership_role %>)</small>
     </li>
   <% end %>
-  <li><%= link_to 'Invite a member', new_budget_domain_invitation_path(id: @budget_domain.id) %></li>
+  <li><%= link_to 'Invite a member', new_budget_domain_invitation_path(@budget_domain) %></li>
 </ul>
 
-
+<%= link_to 'Manage members', budget_domain_memberships_path(@budget_domain) %> |
 <%= link_to 'Edit', edit_budget_domain_path(@budget_domain) %> |
 <%= link_to 'Back', budget_domains_path %>

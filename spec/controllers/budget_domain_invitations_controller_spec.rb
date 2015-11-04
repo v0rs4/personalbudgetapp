@@ -3,16 +3,17 @@ RSpec.describe BudgetDomainInvitationsController, type: :controller do
   let!(:another_user) { create(:user) }
   let!(:budget_domain) { create(:budget_domain) }
 
+  let(:budget_domain_id) { budget_domain.id }
+
   let(:valid_attributes) do
     {
-      email: another_user.email,
-      budget_domain_id: budget_domain.id
+      email: another_user.email
     }
   end
 
   let(:invalid_attributes) {
     valid_attributes.tap do |attrs|
-      attrs[:budget_domain_id] = 0
+      attrs[:email] = 'wrong'
     end
   }
 
@@ -30,7 +31,7 @@ RSpec.describe BudgetDomainInvitationsController, type: :controller do
     let!(:budget_domain_invitation) {BudgetDomainInvitation.new(valid_attributes) }
 
     before(:example) do
-      get :new, {}, valid_session
+      get :new, { budget_domain_id: budget_domain.id }, valid_session
     end
 
     it "returns http success" do
@@ -44,7 +45,9 @@ RSpec.describe BudgetDomainInvitationsController, type: :controller do
 
   describe "POST #create" do
     def make_request(attrs)
-      post :create, { budget_domain_invitation: attrs }, valid_session
+      post :create, {
+        budget_domain_id: budget_domain_id, budget_domain_invitation: attrs
+      }, valid_session
     end
 
     let(:invitation) { ActionMailer::Base.deliveries.last }
@@ -59,7 +62,7 @@ RSpec.describe BudgetDomainInvitationsController, type: :controller do
     end
 
     context 'when params are valid' do
-      let(:budget_domain_id) { 0 }
+      # let(:budget_domain_id) { 0 }
 
       it 'does not sends an invitation' do
         expect {

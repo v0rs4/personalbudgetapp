@@ -15,19 +15,19 @@ RSpec.describe BudgetDomainMembershipsController, type: :controller do
 
       it 'joins a user to a budget domain' do
         expect {
-          get :join, { token: token }
+          get :join, { budget_domain_id: budget_domain.id, token: token }
         }.to change(BudgetDomainMembership, :count).by(1)
       end
 
       it 'sets notice flash to "Successfuly"' do
-        get :join, { token: token }
+        get :join, { budget_domain_id: budget_domain.id, token: token }
         expect(controller).to set_flash[:notice].to('Successfuly')
       end
 
       context 'when call twice with the same token' do
         it 'sets notice flash to "You are already a member"' do
-          get :join, { token: token }
-          get :join, { token: token }
+          get :join, { budget_domain_id: budget_domain.id, token: token }
+          get :join, { budget_domain_id: budget_domain.id, token: token }
           expect(controller).to set_flash[:notice].to('You are already a member')
         end
       end
@@ -37,7 +37,7 @@ RSpec.describe BudgetDomainMembershipsController, type: :controller do
       let(:token) { valid_token << 'WrOnG' }
 
       it 'sets alert flash to "Invalid token"' do
-        get :join, { token: token }
+        get :join, { budget_domain_id: budget_domain.id, token: token }
         expect(controller).to set_flash[:alert].to('Invalid token')
       end
     end
@@ -46,7 +46,7 @@ RSpec.describe BudgetDomainMembershipsController, type: :controller do
       let(:token) { 'WrOnG' }
 
       it 'sets alert flash to "Invalid token"' do
-        get :join, { token: token }
+        get :join, { budget_domain_id: budget_domain.id, token: token }
         expect(controller).to set_flash[:alert].to('Invalid token')
       end
     end
@@ -67,24 +67,24 @@ RSpec.describe BudgetDomainMembershipsController, type: :controller do
 
       it 'destroys the requested membership' do
         expect {
-          delete :destroy, { id: membership.to_param }
+          delete :destroy, { budget_domain_id: budget_domain.id, id: membership.to_param }
         }.to change(BudgetDomainMembership, :count).by(-1)
       end
 
       it "redirects to the budget_domains list" do
-        delete :destroy, { id: membership.to_param}
+        delete :destroy, { budget_domain_id: budget_domain.id, id: membership.to_param}
         expect(response).to redirect_to(budget_domains_url)
       end
 
       it "sets notice flash to 'Budget domain membership was successfully destroyed.'" do
-        delete :destroy, { id: membership.to_param}
+        delete :destroy, { budget_domain_id: budget_domain.id, id: membership.to_param}
         expect(controller).to set_flash[:notice].to('Budget domain membership was successfully destroyed.')
       end
     end
 
     context 'when user is logged out' do
       it "redirects to the budget_domains list" do
-        delete :destroy, { id: membership.to_param}
+        delete :destroy, { budget_domain_id: budget_domain.id, id: membership.to_param}
         expect(response).to redirect_to(new_user_session_url)
       end
     end
