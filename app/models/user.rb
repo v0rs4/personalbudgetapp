@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
 
   enum role: ROLES
 
+  has_many :budget_categories
   has_many :budget_domain_memberships
   has_many :budget_domains, through: :budget_domain_memberships
 

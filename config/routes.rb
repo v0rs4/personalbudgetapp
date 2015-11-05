@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     end
     resources :invitations, controller: :budget_domain_invitations, as: :invitations, only: %i[new create]
   end
+  resources :budget_categories
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
