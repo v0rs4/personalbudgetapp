@@ -1,0 +1,29 @@
+<%= form_for @membership, url: budget_domain_membership_path(@budget_domain, @membership) do |f| %>
+  <% if @membership.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@membership.errors.count, "error") %> prohibited this budget_domain from being saved:</h2>
+
+      <ul>
+      <% @membership.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.fields_for :user, @membership.user do |ff| %>
+    <div class="field">
+      <%= ff.label :email %><br>
+      <%= ff.email_field :email, disabled: true %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :role %><br>
+    <%= f.select :role, [:admin, :member] %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

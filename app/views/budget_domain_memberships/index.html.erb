@@ -14,7 +14,6 @@
       <tr>
         <td><%= membership.user.email %></td>
         <td><%= membership.role %></td>
-        <td><%= link_to 'Show', budget_domain_membership_path(@budget_domain, membership) %></td>
         <td><%= link_to 'Edit', edit_budget_domain_membership_path(@budget_domain, membership) %></td>
         <td><%= link_to 'Destroy', budget_domain_membership_path(@budget_domain, membership), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
