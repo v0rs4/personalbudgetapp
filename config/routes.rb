@@ -1,13 +1,16 @@
 Rails.application.routes.draw do
   default_url_options host: ENV['DOMAIN']
   devise_for :users
-  resources :domains, controller: :budget_domains, as: :budget_domains do
-    resources :members, controller: :budget_domain_memberships, as: :memberships do
-      get 'join', on: :collection
+  scope '/budget' do
+    get '/', to: redirect('/budget/domains')
+    resources :domains, controller: :budget_domains, as: :budget_domains do
+      resources :members, controller: :budget_domain_memberships, as: :memberships do
+        get 'join', on: :collection
+      end
+      resources :invitations, controller: :budget_domain_invitations, as: :invitations, only: %i[new create]
     end
-    resources :invitations, controller: :budget_domain_invitations, as: :invitations, only: %i[new create]
+    resources :categories, controller: :budget_categories, as: :budget_categories
   end
-  resources :budget_categories
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
