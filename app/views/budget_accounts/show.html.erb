@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Budget domain:</strong>
+  <%= @budget_account.budget_domain.name %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @budget_account.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @budget_account.description %>
+</p>
+
+<p>
+  <strong>Currency code:</strong>
+  <%= @budget_account.currency_code %>
+</p>
+
+<%= link_to 'Edit', [:edit, @budget_domain, @budget_account] %> |
+<%= link_to 'Back', budget_domain_budget_accounts_path(@budget_domain) %>

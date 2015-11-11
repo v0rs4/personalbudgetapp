@@ -23,4 +23,6 @@ class BudgetCategory < ActiveRecord::Base
 
   validates :name, presence: true
   validates :kind, inclusion: { in: KINDS.map(&:to_s) }
+
+  belongs_to :budget_domain
 end

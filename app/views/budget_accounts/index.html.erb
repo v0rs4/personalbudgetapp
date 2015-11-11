@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Budget Accounts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Budget domain</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Currency code</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @budget_accounts.each do |budget_account| %>
+      <tr>
+        <td><%= budget_account.budget_domain.name %></td>
+        <td><%= budget_account.name %></td>
+        <td><%= budget_account.description %></td>
+        <td><%= budget_account.currency_code %></td>
+        <td><%= link_to 'Show', [@budget_domain, budget_account] %></td>
+        <td><%= link_to 'Edit', [:edit, @budget_domain, budget_account] %></td>
+        <td><%= link_to 'Destroy', [@budget_domain, budget_account], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Budget account', new_budget_domain_budget_account_path %> |
+<%= link_to 'Go back', @budget_domain %>
