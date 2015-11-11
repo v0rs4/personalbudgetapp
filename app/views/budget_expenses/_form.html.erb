@@ -1,10 +1,10 @@
-<%= form_for([@budget_domain, @budget_income]) do |f| %>
-  <% if @budget_income.errors.any? %>
+<%= form_for([@budget_domain, @budget_expense]) do |f| %>
+  <% if @budget_expense.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@budget_income.errors.count, "error") %> prohibited this budget_income from being saved:</h2>
+      <h2><%= pluralize(@budget_expense.errors.count, "error") %> prohibited this budget_expense from being saved:</h2>
 
       <ul>
-      <% @budget_income.errors.full_messages.each do |message| %>
+      <% @budget_expense.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
@@ -20,7 +20,7 @@
   </div>
   <div class="field">
     <%= f.label :budget_category_id %><br>
-    <%= f.select :budget_category_id, @budget_domain.categories.income_related.map { |x| [x.name, x.id] } %>
+    <%= f.select :budget_category_id, @budget_domain.categories.expense_related.map { |x| [x.name, x.id] } %>
   </div>
   <div class="field">
     <%= f.label :comment %><br>

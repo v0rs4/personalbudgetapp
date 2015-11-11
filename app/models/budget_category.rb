@@ -25,4 +25,7 @@ class BudgetCategory < ActiveRecord::Base
   validates :kind, inclusion: { in: KINDS.map(&:to_s) }
 
   belongs_to :budget_domain
+
+  scope :income_related, -> { where(kind: :income) }
+  scope :expense_related, -> { where.not(kind: :income) }
 end
