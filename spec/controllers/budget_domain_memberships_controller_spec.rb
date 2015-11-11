@@ -73,7 +73,7 @@ RSpec.describe BudgetDomainMembershipsController, type: :controller do
 
       it "redirects to the budget_domains list" do
         delete :destroy, { budget_domain_id: budget_domain.id, id: membership.to_param}
-        expect(response).to redirect_to(budget_domains_url)
+        expect(response).to redirect_to(budget_domains_path)
       end
 
       it "sets notice flash to 'Budget domain membership was successfully destroyed.'" do
@@ -85,7 +85,7 @@ RSpec.describe BudgetDomainMembershipsController, type: :controller do
     context 'when user is logged out' do
       it "redirects to the budget_domains list" do
         delete :destroy, { budget_domain_id: budget_domain.id, id: membership.to_param}
-        expect(response).to redirect_to(new_user_session_url)
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
   end

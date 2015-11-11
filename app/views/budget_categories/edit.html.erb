@@ -2,5 +2,5 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @budget_category %> |
-<%= link_to 'Back', budget_categories_path %>
+<%= link_to 'Show', [@budget_domain, @budget_category] %> |
+<%= link_to 'Back', budget_domain_budget_categories_path(@budget_domain) %>

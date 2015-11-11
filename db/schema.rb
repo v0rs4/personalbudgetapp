@@ -11,20 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151105103310) do
+ActiveRecord::Schema.define(version: 20151105164832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "budget_categories", force: :cascade do |t|
-    t.integer  "user_id",    null: false
-    t.string   "name",       null: false
-    t.string   "kind",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "budget_domain_id", null: false
+    t.string   "name",             null: false
+    t.string   "kind",             null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
-  add_index "budget_categories", ["user_id", "name"], name: "index_budget_categories_on_user_id_and_name", unique: true, using: :btree
+  add_index "budget_categories", ["budget_domain_id", "name"], name: "index_budget_categories_on_budget_domain_id_and_name", unique: true, using: :btree
 
   create_table "budget_domain_memberships", force: :cascade do |t|
     t.integer  "user_id",                             null: false
@@ -42,6 +42,19 @@ ActiveRecord::Schema.define(version: 20151105103310) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
+
+  create_table "budget_plans", force: :cascade do |t|
+    t.integer  "budget_domain_id",                 null: false
+    t.integer  "budget_category_id",               null: false
+    t.decimal  "planned_amount",                   null: false
+    t.decimal  "actual_amount",      default: 0.0, null: false
+    t.integer  "year",                             null: false
+    t.integer  "month",                            null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+  end
+
+  add_index "budget_plans", ["budget_domain_id", "budget_category_id", "month"], name: "budget_plans_uniq_record", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -62,7 +75,9 @@ ActiveRecord::Schema.define(version: 20151105103310) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "budget_categories", "users"
+  add_foreign_key "budget_categories", "budget_domains"
   add_foreign_key "budget_domain_memberships", "budget_domains"
   add_foreign_key "budget_domain_memberships", "users"
+  add_foreign_key "budget_plans", "budget_categories"
+  add_foreign_key "budget_plans", "budget_domains"
 end

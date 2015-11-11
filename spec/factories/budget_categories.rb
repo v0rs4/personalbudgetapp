@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :budget_category do
-    user_id 1
-    name "salary"
+    budget_domain_id { fail(ArgumentError) }
+    name { FFaker::Lorem.word }
     kind 'income'
   end
 end

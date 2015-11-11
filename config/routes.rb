@@ -8,8 +8,9 @@ Rails.application.routes.draw do
         get 'join', on: :collection
       end
       resources :invitations, controller: :budget_domain_invitations, as: :invitations, only: %i[new create]
+      resources :plans, controller: :budget_plans, as: :budget_plans
+      resources :categories, controller: :budget_categories, as: :budget_categories
     end
-    resources :categories, controller: :budget_categories, as: :budget_categories
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

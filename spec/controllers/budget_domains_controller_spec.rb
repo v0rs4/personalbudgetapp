@@ -132,7 +132,7 @@ RSpec.describe BudgetDomainsController, type: :controller do
 
     it "redirects to the budget_domains list" do
       delete :destroy, {:id => budget_domain.to_param}, valid_session
-      expect(response).to redirect_to(budget_domains_url)
+      expect(response).to redirect_to(budget_domains_path)
       expect(controller).to set_flash[:notice].to('Budget domain was successfully destroyed.')
     end
   end

@@ -1,0 +1,33 @@
+<%= form_for [@budget_domain, @budget_plan] do |f| %>
+  <% if @budget_plan.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@budget_plan.errors.count, "error") %> prohibited this budget_plan from being saved:</h2>
+
+      <ul>
+      <% @budget_plan.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :budget_category_id %><br>
+    <%= f.select :budget_category_id, @budget_domain.categories.map { |x| [x.name, x.id] } %>
+  </div>
+  <div class="field">
+    <%= f.label :planned_amount %><br>
+    <%= f.number_field :planned_amount %>
+  </div>
+  <div class="field">
+    <%= f.label :year %><br>
+    <%= f.select :year, (2014..2018).map { |x| [x, x] } %>
+  </div>
+  <div class="field">
+    <%= f.label :month %><br>
+    <%= f.select :month, (1..12).map { |x| [x, x] } %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

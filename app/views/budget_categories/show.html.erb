@@ -10,5 +10,5 @@
   <%= @budget_category.kind %>
 </p>
 
-<%= link_to 'Edit', edit_budget_category_path(@budget_category) %> |
-<%= link_to 'Back', budget_categories_path %>
+<%= link_to 'Edit', [:edit, @budget_domain, @budget_category] %> |
+<%= link_to 'Back', budget_domain_budget_categories_path %>

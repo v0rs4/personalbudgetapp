@@ -16,9 +16,9 @@
       <tr>
         <td><%= budget_category.name %></td>
         <td><%= budget_category.kind %></td>
-        <td><%= link_to 'Show', budget_category %></td>
-        <td><%= link_to 'Edit', edit_budget_category_path(budget_category) %></td>
-        <td><%= link_to 'Destroy', budget_category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', [@budget_domain, budget_category] %></td>
+        <td><%= link_to 'Edit', [:edit, @budget_domain, budget_category] %></td>
+        <td><%= link_to 'Destroy', [@budget_domain, budget_category], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +26,5 @@
 
 <br>
 
-<%= link_to 'New Budget category', new_budget_category_path %>
+<%= link_to 'New Budget category', new_budget_domain_budget_category_path %> |
+<%= link_to 'Go back', @budget_domain %>
