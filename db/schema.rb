@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151111153633) do
+ActiveRecord::Schema.define(version: 20151111164819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,17 @@ ActiveRecord::Schema.define(version: 20151111153633) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "budget_incomes", force: :cascade do |t|
+    t.integer  "user_id",            null: false
+    t.integer  "budget_domain_id",   null: false
+    t.integer  "budget_account_id",  null: false
+    t.integer  "budget_category_id", null: false
+    t.decimal  "amount",             null: false
+    t.string   "comment"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
   create_table "budget_plans", force: :cascade do |t|
     t.integer  "budget_domain_id",                 null: false
     t.integer  "budget_category_id",               null: false
@@ -90,6 +101,10 @@ ActiveRecord::Schema.define(version: 20151111153633) do
   add_foreign_key "budget_categories", "budget_domains"
   add_foreign_key "budget_domain_memberships", "budget_domains"
   add_foreign_key "budget_domain_memberships", "users"
+  add_foreign_key "budget_incomes", "budget_accounts"
+  add_foreign_key "budget_incomes", "budget_categories"
+  add_foreign_key "budget_incomes", "budget_domains"
+  add_foreign_key "budget_incomes", "users"
   add_foreign_key "budget_plans", "budget_categories"
   add_foreign_key "budget_plans", "budget_domains"
 end

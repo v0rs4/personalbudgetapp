@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @budget_income.user.email %>
+</p>
+
+<p>
+  <strong>Budget domain:</strong>
+  <%= @budget_income.budget_domain.name %>
+</p>
+
+<p>
+  <strong>Budget account:</strong>
+  <%= @budget_income.budget_account.name %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @budget_income.amount %>
+</p>
+
+<p>
+  <strong>Budget category:</strong>
+  <%= @budget_income.budget_category.name %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= @budget_income.comment %>
+</p>
+
+<%= link_to 'Edit', [:edit, @budget_domain, @budget_income] %> |
+<%= link_to 'Back', budget_domain_budget_incomes_path(@budget_domain) %>

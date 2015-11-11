@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :plans, controller: :budget_plans, as: :budget_plans
       resources :categories, controller: :budget_categories, as: :budget_categories
       resources :accounts, controller: :budget_accounts, as: :budget_accounts
+      resources :incomes, controller: :budget_incomes, as: :budget_incomes
     end
   end
 
