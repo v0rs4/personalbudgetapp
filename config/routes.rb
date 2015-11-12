@@ -4,15 +4,16 @@ Rails.application.routes.draw do
   scope '/budget' do
     get '/', to: redirect('/budget/domains')
     resources :domains, controller: :budget_domains, as: :budget_domains do
-      resources :members, controller: :budget_domain_memberships, as: :memberships do
-        get 'join', on: :collection
-      end
-      resources :invitations, controller: :budget_domain_invitations, as: :invitations, only: %i[new create]
       resources :plans, controller: :budget_plans, as: :budget_plans
       resources :categories, controller: :budget_categories, as: :budget_categories
       resources :accounts, controller: :budget_accounts, as: :budget_accounts
       resources :incomes, controller: :budget_incomes, as: :budget_incomes
       resources :expenses, controller: :budget_expenses, as: :budget_expenses
+      resources :debts, controller: :budget_debts, as: :budget_debts
+      resources :invitations, controller: :budget_domain_invitations, as: :invitations, only: %i[new create]
+      resources :members, controller: :budget_domain_memberships, as: :memberships do
+        get 'join', on: :collection
+      end
     end
   end
 

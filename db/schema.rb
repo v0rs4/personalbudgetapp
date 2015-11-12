@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151111171910) do
+ActiveRecord::Schema.define(version: 20151112085129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,16 @@ ActiveRecord::Schema.define(version: 20151111171910) do
   end
 
   add_index "budget_categories", ["budget_domain_id", "name"], name: "index_budget_categories_on_budget_domain_id_and_name", unique: true, using: :btree
+
+  create_table "budget_debts", force: :cascade do |t|
+    t.integer  "user_id",           null: false
+    t.integer  "budget_domain_id",  null: false
+    t.integer  "budget_account_id", null: false
+    t.decimal  "amount",            null: false
+    t.string   "comment"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "budget_domain_memberships", force: :cascade do |t|
     t.integer  "user_id",                             null: false
@@ -110,6 +120,9 @@ ActiveRecord::Schema.define(version: 20151111171910) do
 
   add_foreign_key "budget_accounts", "budget_domains"
   add_foreign_key "budget_categories", "budget_domains"
+  add_foreign_key "budget_debts", "budget_accounts"
+  add_foreign_key "budget_debts", "budget_domains"
+  add_foreign_key "budget_debts", "users"
   add_foreign_key "budget_domain_memberships", "budget_domains"
   add_foreign_key "budget_domain_memberships", "users"
   add_foreign_key "budget_expenses", "budget_accounts"

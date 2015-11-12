@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @budget_debt.user.email %>
+</p>
+
+<p>
+  <strong>Budget domain:</strong>
+  <%= @budget_debt.budget_domain.name %>
+</p>
+
+<p>
+  <strong>Budget account:</strong>
+  <%= @budget_debt.budget_account.name %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @budget_debt.amount %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= @budget_debt.comment %>
+</p>
+
+<%= link_to 'Edit', [:edit, @budget_domain, @budget_debt] %> |
+<%= link_to 'Back', budget_domain_budget_debts_path(@budget_domain) %>
