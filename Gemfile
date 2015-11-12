@@ -10,6 +10,8 @@ gem 'devise'
 gem 'cancancan'
 gem 'dotenv-rails'
 gem 'jwt'
+gem 'active_model_serializers', '~> 0.10.0.rc3'
+gem 'cancancan'
 
 group :development, :test do
   gem 'capybara'

@@ -1,6 +1,8 @@
 class BudgetIncomesController < ApplicationController
-  before_action :set_budget_income, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
   before_action :set_budget_domain
+  before_action :authorize_budget_domain, only: [:edit, :update, :create, :destroy]
+  before_action :set_budget_income, only: [:show, :edit, :update, :destroy]
 
   # GET /budget_incomes
   def index
@@ -50,6 +52,12 @@ class BudgetIncomesController < ApplicationController
 
   def set_budget_domain
     @budget_domain = BudgetDomain.find(params[:budget_domain_id])
+  end
+
+  def authorize_budget_domain
+    authorize! :update, @budget_domain
+  rescue CanCan::AccessDenied
+    redirect_to budget_domain_budget_incomes_path(@budget_domain)
   end
 
   # Use callbacks to share common setup or constraints between actions.

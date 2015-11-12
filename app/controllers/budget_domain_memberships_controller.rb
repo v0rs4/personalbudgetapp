@@ -1,28 +1,23 @@
 class BudgetDomainMembershipsController < ApplicationController
   before_action :authenticate_user!, except: :join
+  before_action :set_budget_domain, except: :join
+  before_action :authorize_budget_domain, except: :join
 
   def index
-    @budget_domain = BudgetDomain.find(params[:budget_domain_id])
-    @memberships = BudgetDomainMembership.includes(:user).where(
-      budget_domain: @budget_domain
-    )
+    @memberships = BudgetDomainMembership.includes(:user).where(budget_domain: @budget_domain)
   end
 
   def edit
-    @budget_domain = BudgetDomain.find(params[:budget_domain_id])
     @membership = BudgetDomainMembership.find(params[:id])
   end
 
   def update
-    @budget_domain = BudgetDomain.find(params[:budget_domain_id])
     @membership = BudgetDomainMembership.find(params[:id])
-    respond_to do |format|
-      if @membership.update(membership_params)
-        format.html { redirect_to budget_domain_memberships_path, notice: 'Budget domain was successfully updated.' }
+    if @membership.update(membership_params)
+        redirect_to budget_domain_memberships_path, notice: 'Budget domain was successfully updated.'
       else
-        format.html { render :edit }
+        render :edit
       end
-    end
   end
 
   # GET /domains/memberships/join?token=XXXX.XXXX.XXXX
@@ -49,14 +44,20 @@ class BudgetDomainMembershipsController < ApplicationController
   # DELETE /domains/memberships/:id
   def destroy
     BudgetDomainMembership.find(params[:id]).destroy
-
-    respond_to do |format|
-      format.html { redirect_to budget_domains_path, notice: 'Budget domain membership was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to budget_domains_path, notice: 'Budget domain membership was successfully destroyed.'
   end
 
   private
+
+  def set_budget_domain
+    @budget_domain = BudgetDomain.find(params[:budget_domain_id])
+  end
+
+  def authorize_budget_domain
+    authorize! :update, @budget_domain
+  rescue CanCan::AccessDenied
+    redirect_to budget_domain_path(@budget_domain)
+  end
 
   def membership_params
     params.require(:budget_domain_membership).permit(:role)

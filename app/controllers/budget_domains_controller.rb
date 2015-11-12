@@ -6,12 +6,17 @@ class BudgetDomainsController < ApplicationController
   # GET /domains.json
   def index
     @budget_domains = current_user.budget_domains
+    respond_to do |format|
+      format.html
+      format.json { render json: @budget_domains, meta: { total: @budget_domains.size }, include: ['incomes'] }
+    end
   end
 
   # GET /domains/1
   # GET /domains/1.json
   def show
     @members = User.with_membership(budget_domain_id: @budget_domain.id)
+    @can_update = can?(:update, @budget_domain)
   end
 
   # GET /domains/new
@@ -21,6 +26,7 @@ class BudgetDomainsController < ApplicationController
 
   # GET /domains/1/edit
   def edit
+    authorize! :update, @budget_domain
   end
 
   # POST /domains
@@ -47,6 +53,7 @@ class BudgetDomainsController < ApplicationController
   # PATCH/PUT /domains/1
   # PATCH/PUT /domains/1.json
   def update
+    authorize! :update, @budget_domain
     respond_to do |format|
       if @budget_domain.update(budget_domain_params)
         format.html { redirect_to @budget_domain, notice: 'Budget domain was successfully updated.' }
@@ -61,18 +68,16 @@ class BudgetDomainsController < ApplicationController
   # DELETE /domains/1
   # DELETE /domains/1.json
   def destroy
+    authorize! :destroy, @budget_domain
     @budget_domain.destroy
-    respond_to do |format|
-      format.html { redirect_to budget_domains_path, notice: 'Budget domain was successfully destroyed.' }
-      # format.json { head :no_content }
-    end
+    redirect_to budget_domains_path, notice: 'Budget domain was successfully destroyed.'
   end
 
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_budget_domain
-    @budget_domain = current_user.budget_domains.find(params[:id])
+    @budget_domain = current_user.budget_domains.includes(:budget_domain_memberships).find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

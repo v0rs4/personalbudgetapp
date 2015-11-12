@@ -21,14 +21,19 @@
         <td><%= budget_account.description %></td>
         <td><%= budget_account.currency_code %></td>
         <td><%= link_to 'Show', [@budget_domain, budget_account] %></td>
-        <td><%= link_to 'Edit', [:edit, @budget_domain, budget_account] %></td>
-        <td><%= link_to 'Destroy', [@budget_domain, budget_account], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if @can_update %>
+          <td><%= link_to 'Edit', [:edit, @budget_domain, budget_account] %></td>
+        <% end %>
+        <% if @can_destroy %>
+          <td><%= link_to 'Destroy', [@budget_domain, budget_account], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Budget account', new_budget_domain_budget_account_path %> |
+<% if @can_create %>
+  <%= link_to 'New Budget account', new_budget_domain_budget_account_path %> |
+<% end %>
 <%= link_to 'Go back', @budget_domain %>

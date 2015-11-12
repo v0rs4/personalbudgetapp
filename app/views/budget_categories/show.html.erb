@@ -9,6 +9,7 @@
   <strong>Kind:</strong>
   <%= @budget_category.kind %>
 </p>
-
-<%= link_to 'Edit', [:edit, @budget_domain, @budget_category] %> |
+<% if @can_update %>
+  <%= link_to 'Edit', [:edit, @budget_domain, @budget_category] %> |
+<% end %>
 <%= link_to 'Back', budget_domain_budget_categories_path %>

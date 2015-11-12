@@ -1,7 +1,7 @@
 class BudgetCategoriesController < ApplicationController
-  before_action :set_budget_category, only: [:show, :edit, :update, :destroy]
-  before_action :set_budget_domain
   before_action :authenticate_user!
+  before_action :set_budget_category, only: [:show, :edit, :update, :destroy]
+  include BudgetDomainHelpers
 
   # GET /budget_categories
   def index
@@ -49,10 +49,6 @@ class BudgetCategoriesController < ApplicationController
   end
 
   private
-
-  def set_budget_domain
-    @budget_domain = BudgetDomain.find(params[:budget_domain_id])
-  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_budget_category

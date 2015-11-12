@@ -14,7 +14,9 @@ Rails.application.routes.draw do
       resources :members, controller: :budget_domain_memberships, as: :memberships do
         get 'join', on: :collection
       end
+      get '/stats', to: 'statistics#index'
     end
+    get '/stats', to: 'statistics#index'
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
