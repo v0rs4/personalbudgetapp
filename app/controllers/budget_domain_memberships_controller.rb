@@ -1,17 +1,21 @@
 class BudgetDomainMembershipsController < ApplicationController
   before_action :authenticate_user!, except: :join
-  before_action :set_budget_domain, except: :join
-  before_action :authorize_budget_domain, except: :join
+  before_action :set_budget_domain
+
+  rescue_from CanCan::AccessDenied, with: :authorization_failed
 
   def index
+    authorize! :update, @budget_domain
     @memberships = BudgetDomainMembership.includes(:user).where(budget_domain: @budget_domain)
   end
 
   def edit
+    authorize! :update, @budget_domain
     @membership = BudgetDomainMembership.find(params[:id])
   end
 
   def update
+    authorize! :update, @budget_domain
     @membership = BudgetDomainMembership.find(params[:id])
     if @membership.update(membership_params)
         redirect_to budget_domain_memberships_path, notice: 'Budget domain was successfully updated.'
@@ -43,19 +47,15 @@ class BudgetDomainMembershipsController < ApplicationController
 
   # DELETE /domains/memberships/:id
   def destroy
+    authorize! :destroy, @budget_domain
     BudgetDomainMembership.find(params[:id]).destroy
     redirect_to budget_domains_path, notice: 'Budget domain membership was successfully destroyed.'
   end
 
   private
 
-  def set_budget_domain
-    @budget_domain = BudgetDomain.find(params[:budget_domain_id])
-  end
-
-  def authorize_budget_domain
-    authorize! :update, @budget_domain
-  rescue CanCan::AccessDenied
+  def authorization_failed(ex)
+    flash[:error] = 'Access Denied'
     redirect_to budget_domain_path(@budget_domain)
   end
 

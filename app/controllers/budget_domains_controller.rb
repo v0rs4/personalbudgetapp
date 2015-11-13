@@ -2,21 +2,18 @@ class BudgetDomainsController < ApplicationController
   before_action :set_budget_domain, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
 
+  rescue_from CanCan::AccessDenied, with: :authorization_failed
+
   # GET /domains
   # GET /domains.json
   def index
     @budget_domains = current_user.budget_domains
-    respond_to do |format|
-      format.html
-      format.json { render json: @budget_domains, meta: { total: @budget_domains.size }, include: ['incomes'] }
-    end
   end
 
   # GET /domains/1
   # GET /domains/1.json
   def show
     @members = User.with_membership(budget_domain_id: @budget_domain.id)
-    @can_update = can?(:update, @budget_domain)
   end
 
   # GET /domains/new
@@ -32,21 +29,12 @@ class BudgetDomainsController < ApplicationController
   # POST /domains
   # POST /domains.json
   def create
-    service = BudgetDomainCreator.call(
-      params: budget_domain_params,
-      user_id:  current_user.id
-    )
+    service = BudgetDomainCreator.call(create_params)
     @budget_domain = service.budget_domain
-
-    respond_to do |format|
-      if service.status == :ok
-        format.html { redirect_to @budget_domain, notice: 'Budget domain was successfully created.' }
-        # format.html { redirect_to @budget_domain, notice: 'Budget domain was successfully created.' }
-        # format.json { render :show, status: :created, location: @budget_domain }
-      else
-        format.html { render :new }
-        # format.json { render json: @budget_domain.errors, status: :unprocessable_entity }
-      end
+    if service.status == :ok
+      redirect_to @budget_domain, notice: 'Budget domain was successfully created.'
+    else
+      render :new
     end
   end
 
@@ -54,14 +42,10 @@ class BudgetDomainsController < ApplicationController
   # PATCH/PUT /domains/1.json
   def update
     authorize! :update, @budget_domain
-    respond_to do |format|
-      if @budget_domain.update(budget_domain_params)
-        format.html { redirect_to @budget_domain, notice: 'Budget domain was successfully updated.' }
-        # format.json { render :show, status: :ok, location: @budget_domain }
-      else
-        format.html { render :edit }
-        # format.json { render json: @budget_domain.errors, status: :unprocessable_entity }
-      end
+    if @budget_domain.update(budget_domain_params)
+      redirect_to @budget_domain, notice: 'Budget domain was successfully updated.'
+    else
+      render :edit
     end
   end
 
@@ -75,9 +59,17 @@ class BudgetDomainsController < ApplicationController
 
   private
 
+  def authorization_failed(ex)
+    redirect_to budget_domain_path(@budget_domain)
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_budget_domain
     @budget_domain = current_user.budget_domains.includes(:budget_domain_memberships).find(params[:id])
+  end
+
+  def create_params
+    { params: budget_domain_params, user_id:  current_user.id }
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

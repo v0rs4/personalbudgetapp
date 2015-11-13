@@ -1,8 +1,9 @@
 class BudgetExpensesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_budget_domain
-  before_action :authorize_budget_domain, only: [:edit, :update, :create, :destroy]
   before_action :set_budget_expense, only: [:show, :edit, :update, :destroy]
+  before_action :set_budget_domain
+
+  rescue_from CanCan::AccessDenied, with: :authorization_failed
 
   # GET /budget_expenses
   def index
@@ -15,15 +16,18 @@ class BudgetExpensesController < ApplicationController
 
   # GET /budget_expenses/new
   def new
+    authorize! :create, @budget_domain
     @budget_expense = BudgetExpense.new
   end
 
   # GET /budget_expenses/1/edit
   def edit
+    authorize! :update, @budget_domain
   end
 
   # POST /budget_expenses
   def create
+    authorize! :create, @budget_domain
     @budget_expense = BudgetExpense.new(new_budget_expense_params)
 
     if @budget_expense.save
@@ -35,6 +39,7 @@ class BudgetExpensesController < ApplicationController
 
   # PATCH/PUT /budget_expenses/1
   def update
+    authorize! :update, @budget_domain
     if @budget_expense.update(budget_expense_params)
       redirect_to [@budget_domain, @budget_expense], notice: 'Budget expense was successfully updated.'
     else
@@ -44,19 +49,15 @@ class BudgetExpensesController < ApplicationController
 
   # DELETE /budget_expenses/1
   def destroy
+    authorize! :destroy, @budget_domain
     @budget_expense.destroy
     redirect_to budget_domain_budget_expenses_path(@budget_domain), notice: 'Budget expense was successfully destroyed.'
   end
 
   private
 
-  def set_budget_domain
-    @budget_domain = BudgetDomain.find(params[:budget_domain_id])
-  end
-
-  def authorize_budget_domain
-    authorize! :update, @budget_domain
-  rescue CanCan::AccessDenied
+  def authorization_failed(ex)
+    flash[:error] = 'Access Denied'
     redirect_to budget_domain_budget_expenses_path(@budget_domain)
   end
 
