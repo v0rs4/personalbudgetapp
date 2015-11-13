@@ -17,19 +17,13 @@
         <td><%= budget_category.name %></td>
         <td><%= budget_category.kind %></td>
         <td><%= link_to 'Show', [@budget_domain, budget_category] %></td>
-        <% if @can_update %>
-          <td><%= link_to 'Edit', [:edit, @budget_domain, budget_category] %></td>
-        <% end %>
-        <% if @can_destroy %>
-          <td><%= link_to 'Destroy', [@budget_domain, budget_category], method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
+        <td><%= link_to 'Edit', [:edit, @budget_domain, budget_category] %></td>
+        <td><%= link_to 'Destroy', [@budget_domain, budget_category], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-<% if @can_destroy %>
-  <%= link_to 'New Budget category', new_budget_domain_budget_category_path %> |
-<% end %>
+<%= link_to 'New Budget category', new_budget_domain_budget_category_path %> |
 <%= link_to 'Go back', @budget_domain %>
