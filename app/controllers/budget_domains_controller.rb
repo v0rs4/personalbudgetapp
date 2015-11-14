@@ -1,13 +1,15 @@
 class BudgetDomainsController < ApplicationController
-  before_action :set_budget_domain, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
+  load_and_authorize_resource except: :create
 
-  rescue_from CanCan::AccessDenied, with: :authorization_failed
+  rescue_from CanCan::AccessDenied do |e|
+    flash[:error] = 'Access Denied'
+    redirect_to budget_domains_path
+  end
 
   # GET /domains
   # GET /domains.json
   def index
-    @budget_domains = current_user.budget_domains
+    # @budget_domains = current_user.budget_domains
   end
 
   # GET /domains/1
@@ -18,7 +20,7 @@ class BudgetDomainsController < ApplicationController
 
   # GET /domains/new
   def new
-    @budget_domain = BudgetDomain.new
+    # @budget_domain = BudgetDomain.new
   end
 
   # GET /domains/1/edit
@@ -29,6 +31,7 @@ class BudgetDomainsController < ApplicationController
   # POST /domains
   # POST /domains.json
   def create
+    authorize! :create, BudgetDomain
     service = BudgetDomainCreator.call(create_params)
     @budget_domain = service.budget_domain
     if service.status == :ok
@@ -59,17 +62,8 @@ class BudgetDomainsController < ApplicationController
 
   private
 
-  def authorization_failed(ex)
-    redirect_to budget_domain_path(@budget_domain)
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_budget_domain
-    @budget_domain = current_user.budget_domains.includes(:budget_domain_memberships).find(params[:id])
-  end
-
   def create_params
-    { params: budget_domain_params, user_id:  current_user.id }
+    { params: budget_domain_params, user_id: current_user.id }
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

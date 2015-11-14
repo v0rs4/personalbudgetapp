@@ -18,15 +18,11 @@
       <small>(<%= user.budget_domain_membership_role %>)</small>
     </li>
   <% end %>
-  <% if @can_update %>
-    <li><%= link_to 'Invite a member', new_budget_domain_invitation_path(@budget_domain) %></li>
-  <% end %>
+  <li><%= link_to 'Invite a member', new_budget_domain_invitation_path(@budget_domain) %></li>
 </ul>
 
 <h4>Related</h4>
-<% if @can_update %>
-  <%= link_to 'Manage members', budget_domain_memberships_path(@budget_domain) %> |
-<% end %>
+<%= link_to 'Manage members', budget_domain_memberships_path(@budget_domain) %> |
 <%= link_to 'Plans', budget_domain_budget_plans_path(@budget_domain) %> |
 <%= link_to 'Categories', budget_domain_budget_categories_path(@budget_domain) %> |
 <%= link_to 'Accounts', budget_domain_budget_accounts_path(@budget_domain) %> |
@@ -34,7 +30,5 @@
 <%= link_to 'Expenses', budget_domain_budget_expenses_path(@budget_domain) %> |
 <%= link_to 'Debts', budget_domain_budget_debts_path(@budget_domain) %>
 <h4>Actions</h4>
-<% if @can_update %>
-  <%= link_to 'Edit', edit_budget_domain_path(@budget_domain) %> |
-<% end %>
+<%= link_to 'Edit', edit_budget_domain_path(@budget_domain) %> |
 <%= link_to 'Go back', budget_domains_path %>

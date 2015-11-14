@@ -1,13 +1,14 @@
 class BudgetPlansController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_budget_plan, only: [:show, :edit, :update, :destroy]
-  before_action :set_budget_domain
+  load_and_authorize_resource :budget_domain
+  load_and_authorize_resource :through => :budget_domain
 
-  rescue_from CanCan::AccessDenied, with: :authorization_failed
+  rescue_from CanCan::AccessDenied do |e|
+    flash[:error] = 'Access Denied'
+    redirect_to budget_domain_budget_plans_path(@budget_domain)
+  end
 
   # GET /budget_plans
   def index
-    @budget_plans = BudgetPlan.all
   end
 
   # GET /budget_plans/1
@@ -16,18 +17,14 @@ class BudgetPlansController < ApplicationController
 
   # GET /budget_plans/new
   def new
-    authorize! :create, @budget_domain
-    @budget_plan = BudgetPlan.new
   end
 
   # GET /budget_plans/1/edit
   def edit
-    authorize! :update, @budget_domain
   end
 
   # POST /budget_plans
   def create
-    authorize! :create, @budget_domain
     @budget_plan = BudgetPlan.new(new_budget_plan_params)
 
     if @budget_plan.save
@@ -39,7 +36,6 @@ class BudgetPlansController < ApplicationController
 
   # PATCH/PUT /budget_plans/1
   def update
-    authorize! :update, @budget_domain
     if @budget_plan.update(budget_plan_params)
       redirect_to [@budget_domain, @budget_plan], notice: 'Budget plan was successfully updated.'
     else
@@ -49,22 +45,11 @@ class BudgetPlansController < ApplicationController
 
   # DELETE /budget_plans/1
   def destroy
-    authorize! :destroy, @budget_domain
     @budget_plan.destroy
     redirect_to budget_domain_budget_plans_path(@budget_domain), notice: 'Budget plan was successfully destroyed.'
   end
 
   private
-
-  def authorization_failed(ex)
-    flash[:error] = 'Access Denied'
-    redirect_to budget_domain_budget_plans_path(@budget_domain)
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_budget_plan
-    @budget_plan = BudgetPlan.find(params[:id])
-  end
 
   # Only allow a trusted parameter "white list" through.
   def budget_plan_params

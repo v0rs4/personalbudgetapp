@@ -1,13 +1,14 @@
 class BudgetDebtsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_budget_debt, only: [:show, :edit, :update, :destroy]
-  before_action :set_budget_domain
+  load_and_authorize_resource :budget_domain
+  load_and_authorize_resource :through => :budget_domain
 
-  rescue_from CanCan::AccessDenied, with: :authorization_failed
+  rescue_from CanCan::AccessDenied do |e|
+    flash[:error] = 'Access Denied'
+    redirect_to budget_domain_budget_debts_path(@budget_domain)
+  end
 
   # GET /budget_debts
   def index
-    @budget_debts = BudgetDebt.all
   end
 
   # GET /budget_debts/1
@@ -16,13 +17,10 @@ class BudgetDebtsController < ApplicationController
 
   # GET /budget_debts/new
   def new
-    authorize! :create, @budget_domain
-    @budget_debt = BudgetDebt.new
   end
 
   # GET /budget_debts/1/edit
   def edit
-    authorize! :update, @budget_domain
   end
 
   # POST /budget_debts
@@ -48,22 +46,11 @@ class BudgetDebtsController < ApplicationController
 
   # DELETE /budget_debts/1
   def destroy
-    authorize! :destroy, @budget_domain
     @budget_debt.destroy
     redirect_to budget_domain_budget_debts_path(@budget_domain), notice: 'Budget debt was successfully destroyed.'
   end
 
   private
-
-  def authorization_failed(ex)
-    flash[:error] = 'Access Denied'
-    redirect_to budget_domain_budget_debts_path(@budget_domain)
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_budget_debt
-    @budget_debt = BudgetDebt.find(params[:id])
-  end
 
   def new_budget_debt_params
     budget_debt_params.merge(

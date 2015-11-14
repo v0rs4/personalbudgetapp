@@ -1,4 +1,4 @@
-class Api::V1::BaseController < ActionController::API
+class Api::V1::BaseController < ActionController::Base
   include CanCan::ControllerAdditions
 
   clear_respond_to

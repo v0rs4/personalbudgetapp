@@ -1,8 +1,11 @@
 class BudgetDomainMembershipsController < ApplicationController
-  before_action :authenticate_user!, except: :join
-  before_action :set_budget_domain
+  skip_before_action :authenticate_user!, only: :join
+  load_resource :budget_domain
 
-  rescue_from CanCan::AccessDenied, with: :authorization_failed
+  rescue_from CanCan::AccessDenied do |_ex|
+    flash[:error] = 'Access Denied'
+    redirect_to budget_domain_path(@budget_domain)
+  end
 
   def index
     authorize! :update, @budget_domain
@@ -53,11 +56,6 @@ class BudgetDomainMembershipsController < ApplicationController
   end
 
   private
-
-  def authorization_failed(ex)
-    flash[:error] = 'Access Denied'
-    redirect_to budget_domain_path(@budget_domain)
-  end
 
   def membership_params
     params.require(:budget_domain_membership).permit(:role)
