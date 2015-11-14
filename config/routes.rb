@@ -1,6 +1,18 @@
 Rails.application.routes.draw do
+  use_doorkeeper
+
   default_url_options host: ENV['DOMAIN']
+
   devise_for :users
+
+  namespace :api do
+    namespace :v1 do
+      resources :budget_domains do
+        resources :categories, controller: :budget_categories, as: :budget_categories
+      end
+    end
+  end
+
   scope '/budget' do
     get '/', to: redirect('/budget/domains')
     resources :domains, controller: :budget_domains, as: :budget_domains do

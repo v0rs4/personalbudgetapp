@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.2.4'
+gem 'rails-api'
 gem 'pg'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
@@ -11,7 +12,8 @@ gem 'cancancan'
 gem 'dotenv-rails'
 gem 'jwt'
 gem 'active_model_serializers', '~> 0.10.0.rc3'
-gem 'cancancan'
+gem 'doorkeeper'
+
 
 group :development, :test do
   gem 'capybara'
