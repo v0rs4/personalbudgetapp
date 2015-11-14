@@ -1,9 +1,8 @@
 class Api::V1::BudgetDomainsController < Api::V1::BaseController
   load_and_authorize_resource only: %i[index]
-  # load_and_authorize_resource param_method: :update_params, on: :update
-  # load_and_authorize_resource param_method: :create_params, on: :create
+  serialization_scope :current_ability
 
   def index
-    render json: @budget_domains
+    render json: @budget_domains, each_serializer: Api::V1::BudgetDomainSerializer
   end
 end

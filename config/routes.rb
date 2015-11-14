@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :budget_domains do
         resources :categories, controller: :budget_categories, as: :budget_categories
+        resources :expenses, controller: :budget_expenses, as: :budget_expenses
       end
     end
   end
