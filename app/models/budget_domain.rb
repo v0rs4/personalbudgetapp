@@ -1,11 +1,11 @@
 class BudgetDomain < ActiveRecord::Base
   has_many :budget_domain_memberships, dependent: :destroy
-  has_many :budget_categories, dependent: :destroy
-  has_many :budget_accounts, dependent: :destroy
   has_many :budget_expenses, dependent: :destroy
   has_many :budget_incomes, dependent: :destroy
   has_many :budget_plans, dependent: :destroy
   has_many :budget_debts, dependent: :destroy
+  has_many :budget_categories, dependent: :destroy
+  has_many :budget_accounts, dependent: :destroy
 
   has_many :users, through: :budget_domain_memberships
 
