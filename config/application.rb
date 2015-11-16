@@ -36,5 +36,12 @@ module Personalbudget
     config.active_record.raise_in_transactional_callbacks = true
 
     config.action_mailer.default_options = { from: ENV['MAIL_FROM'] }
+
+    config.middleware.insert_before 0, 'Rack::Cors' do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: %i[get post patch put delete options]
+      end
+    end
   end
 end

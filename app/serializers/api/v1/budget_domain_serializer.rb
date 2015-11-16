@@ -1,6 +1,5 @@
 class Api::V1::BudgetDomainSerializer < ActiveModel::Serializer
   attributes :name, :description, :permissions
-
   def permissions
     {
       can_create: scope.can?(:create, object),
