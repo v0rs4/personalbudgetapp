@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151114094430) do
+ActiveRecord::Schema.define(version: 20151204131813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,22 @@ ActiveRecord::Schema.define(version: 20151114094430) do
 
   add_index "budget_plans", ["budget_domain_id", "budget_category_id", "month"], name: "budget_plans_uniq_record", unique: true, using: :btree
 
+  create_table "budget_transactions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "budget_domain_id"
+    t.integer  "budget_account_id"
+    t.integer  "budget_category_id"
+    t.decimal  "amount"
+    t.string   "comment"
+    t.integer  "source_id"
+    t.string   "source_table"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "budget_transactions", ["budget_domain_id"], name: "index_budget_transactions_on_budget_domain_id", using: :btree
+  add_index "budget_transactions", ["user_id"], name: "index_budget_transactions_on_user_id", using: :btree
+
   create_table "oauth_access_grants", force: :cascade do |t|
     t.integer  "resource_owner_id", null: false
     t.integer  "application_id",    null: false
@@ -175,4 +191,8 @@ ActiveRecord::Schema.define(version: 20151114094430) do
   add_foreign_key "budget_incomes", "users"
   add_foreign_key "budget_plans", "budget_categories"
   add_foreign_key "budget_plans", "budget_domains"
+  add_foreign_key "budget_transactions", "budget_accounts"
+  add_foreign_key "budget_transactions", "budget_categories"
+  add_foreign_key "budget_transactions", "budget_domains"
+  add_foreign_key "budget_transactions", "users"
 end
