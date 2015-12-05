@@ -191,8 +191,4 @@ ActiveRecord::Schema.define(version: 20151204131813) do
   add_foreign_key "budget_incomes", "users"
   add_foreign_key "budget_plans", "budget_categories"
   add_foreign_key "budget_plans", "budget_domains"
-  add_foreign_key "budget_transactions", "budget_accounts"
-  add_foreign_key "budget_transactions", "budget_categories"
-  add_foreign_key "budget_transactions", "budget_domains"
-  add_foreign_key "budget_transactions", "users"
 end

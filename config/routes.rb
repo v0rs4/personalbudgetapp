@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       resources :budget_domains do
         resources :categories, controller: :budget_categories, as: :budget_categories
         resources :expenses, controller: :budget_expenses, as: :budget_expenses
+        resources :transactions, controller: :budget_transactions, as: :budget_transactions
       end
     end
   end

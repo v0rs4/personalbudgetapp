@@ -6,6 +6,7 @@ class BudgetDomain < ActiveRecord::Base
   has_many :budget_debts, dependent: :destroy
   has_many :budget_categories, dependent: :destroy
   has_many :budget_accounts, dependent: :destroy
+  has_many :budget_transactions, dependent: :destroy
 
   has_many :users, through: :budget_domain_memberships
 
@@ -16,6 +17,7 @@ class BudgetDomain < ActiveRecord::Base
   alias_attribute :incomes, :budget_incomes
   alias_attribute :plans, :budget_plans
   alias_attribute :debts, :budget_debts
+  alias_attribute :transactions, :budget_transactions
 
   validates :name, presence: true
 end

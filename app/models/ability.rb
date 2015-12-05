@@ -14,6 +14,7 @@ class Ability
     set_budget_expense_abilities
     set_budget_income_abilities
     set_budget_plan_abilities
+    set_budget_transactions_abilities
   end
 
   def set_budget_domain_abilities
@@ -57,5 +58,9 @@ class Ability
   def set_budget_plan_abilities
     can [:read], BudgetPlan, :budget_domain => { :budget_domain_memberships => { user_id: user.id } }
     can [:create, :update, :destroy], BudgetPlan, :budget_domain => { :budget_domain_memberships => { user_id: user.id, role: 'admin' } }
+  end
+
+  def set_budget_transactions_abilities
+    can [:read], BudgetTransaction, :budget_domain => { :budget_domain_memberships => { user_id: user.id } }
   end
 end
